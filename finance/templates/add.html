@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#10B981">
+    <title>FlowFunds - Personal Finance Tracker</title>
+    <meta name="description" content="Track your income, expenses, and savings effortlessly">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* Custom animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.3s ease-out; }
+        
+        /* Active tab styles */
+        .tab-active {
+            background: white;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen max-w-md mx-auto bg-white">
+        <!-- Header -->
+        <header class="sticky top-0 z-50 w-full border-b bg-white">
+            <div class="container flex h-16 items-center justify-between px-4">
+                <a class="flex items-center gap-2" href="/">
+                    <div class="h-10 w-10 bg-emerald-600 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">FF</span>
+                    </div>
+                    <span class="text-xl font-bold text-gray-900">FlowFunds</span>
+                </a>
+                <a href="#profile">
+                    <div class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity">
+                        <div class="flex flex-col items-end">
+                            <span class="text-sm font-semibold text-gray-900">Eddy Fotso</span>
+                            <span class="text-xs text-gray-500">View Profile</span>
+                        </div>
+                        <div class="h-10 w-10 rounded-full overflow-hidden border-2 border-emerald-600 bg-gray-100 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="pb-16">
+            <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 pb-24">
+                <div class="container px-4 py-8 max-w-lg mx-auto">
+                    <!-- Page Title -->
+                    <div class="mb-8 text-center">
+                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-50 mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-emerald-600" id="title-icon">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M12 8v8"></path>
+                                <path d="m8 12 4 4 4-4"></path>
+                            </svg>
+                        </div>
+                        <h1 class="text-3xl font-bold text-gray-900">Add <span id="transaction-type">Expense</span></h1>
+                        <p class="text-gray-600 mt-2">Track your financial activity</p>
+                    </div>
+
+                    <!-- Transaction Type Tabs -->
+                    <div class="bg-white rounded-xl border shadow-sm p-2 mb-6">
+                        <div class="bg-gray-100 rounded-lg grid grid-cols-3 w-full h-auto p-1">
+                            <button type="button" class="flex flex-col items-center gap-2 py-3 rounded-md border border-transparent px-2 text-sm font-medium transition-all" data-tab="income" onclick="switchTab('income')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="m16 12-4-4-4 4"></path>
+                                    <path d="M12 16V8"></path>
+                                </svg>
+                                <span class="text-xs font-medium">Income</span>
+                            </button>
+                            <button type="button" class="flex flex-col items-center gap-2 py-3 rounded-md border border-transparent px-2 text-sm font-medium transition-all tab-active" data-tab="expense" onclick="switchTab('expense')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="M12 8v8"></path>
+                                    <path d="m8 12 4 4 4-4"></path>
+                                </svg>
+                                <span class="text-xs font-medium">Expense</span>
+                            </button>
+                            <button type="button" class="flex flex-col items-center gap-2 py-3 rounded-md border border-transparent px-2 text-sm font-medium transition-all" data-tab="save" onclick="switchTab('save')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+                                    <path d="M11 17h3v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a3.16 3.16 0 0 0 2-2h1a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1h-1a5 5 0 0 0-2-4V3a4 4 0 0 0-3.2 1.6l-.3.4H11a6 6 0 0 0-6 6v1a5 5 0 0 0 2 4v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1z"></path>
+                                    <path d="M16 10h.01"></path>
+                                    <path d="M2 8v1a2 2 0 0 0 2 2h1"></path>
+                                </svg>
+                                <span class="text-xs font-medium">Save</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Transaction Form -->
+                    <div class="bg-white rounded-xl border shadow-sm p-6">
+                        <form class="space-y-6" onsubmit="handleSubmit(event)">
+                            <!-- Amount Field -->
+                            <div class="space-y-3">
+                                <label class="flex items-center gap-2 text-base font-semibold text-gray-700" for="amount">
+                                    Amount (CFA)
+                                </label>
+                                <div class="relative">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400">
+                                        <line x1="12" x2="12" y1="2" y2="22"></line>
+                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                    </svg>
+                                    <input 
+                                        type="number" 
+                                        id="amount" 
+                                        class="w-full rounded-md bg-transparent px-3 py-1 pl-10 text-2xl font-bold h-14 border-2 border-gray-300 focus:border-emerald-500 focus:ring-emerald-500/50 focus:ring-[3px] outline-none transition-all shadow-sm" 
+                                        placeholder="0" 
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            <!-- Account Field -->
+                            <div class="space-y-3">
+                                <label class="flex items-center gap-2 text-base font-semibold text-gray-700" for="account">
+                                    Account
+                                </label>
+                                <select 
+                                    id="account" 
+                                    class="w-full h-12 rounded-md border-2 border-gray-300 bg-transparent px-3 py-2 text-sm focus:border-emerald-500 focus:ring-emerald-500/50 focus:ring-[3px] outline-none transition-all shadow-sm"
+                                    required
+                                >
+                                    <option value="">Select account</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="momo">MoMo</option>
+                                    <option value="orange">Orange Money</option>
+                                    <option value="bank">Bank Savings</option>
+                                </select>
+                            </div>
+
+                            <!-- Category Field -->
+                            <div class="space-y-3">
+                                <label class="flex items-center gap-2 text-base font-semibold text-gray-700" for="category">
+                                    Category
+                                </label>
+                                <select 
+                                    id="category" 
+                                    class="w-full h-12 rounded-md border-2 border-gray-300 bg-transparent px-3 py-2 text-sm focus:border-emerald-500 focus:ring-emerald-500/50 focus:ring-[3px] outline-none transition-all shadow-sm"
+                                    required
+                                >
+                                    <option value="">Select category</option>
+                                    <option value="food">Food & Dining</option>
+                                    <option value="transport">Transportation</option>
+                                    <option value="shopping">Shopping</option>
+                                    <option value="entertainment">Entertainment</option>
+                                    <option value="bills">Bills & Utilities</option>
+                                    <option value="health">Health</option>
+                                    <option value="education">Education</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <!-- Description Field -->
+                            <div class="space-y-3">
+                                <label class="flex items-center gap-2 text-base font-semibold text-gray-700" for="reason">
+                                    Description
+                                </label>
+                                <input 
+                                    type="text"
+                                    id="reason" 
+                                    class="w-full h-12 rounded-md border-2 border-gray-300 bg-transparent px-3 py-2 text-base focus:border-emerald-500 focus:ring-emerald-500/50 focus:ring-[3px] outline-none transition-all shadow-sm" 
+                                    placeholder="What was this for?" 
+                                    required
+                                />
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button 
+                                type="submit" 
+                                class="w-full h-14 text-lg font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-md transition-all inline-flex items-center justify-center gap-2"
+                            >
+                                Add <span id="button-type">Expense</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="fixed bottom-0 left-1/2 transform -translate-x-1/2 z-50 border-t bg-white py-2 w-full max-w-md">
+            <div class="grid grid-cols-4">
+                <a class="flex flex-col items-center gap-1 p-2" href="#dashboard">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-gray-400">
+                        <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
+                        <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    </svg>
+                    <span class="text-xs text-gray-500">Dashboard</span>
+                </a>
+                <a class="flex flex-col items-center gap-1 p-2" href="#add">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-emerald-600">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M8 12h8"></path>
+                        <path d="M12 8v8"></path>
+                    </svg>
+                    <span class="text-xs text-emerald-600 font-medium">Add</span>
+                </a>
+                <a class="flex flex-col items-center gap-1 p-2" href="#transactions">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-gray-400">
+                        <path d="M3 5h.01"></path>
+                        <path d="M3 12h.01"></path>
+                        <path d="M3 19h.01"></path>
+                        <path d="M8 5h13"></path>
+                        <path d="M8 12h13"></path>
+                        <path d="M8 19h13"></path>
+                    </svg>
+                    <span class="text-xs text-gray-500">Transactions</span>
+                </a>
+                <a class="flex flex-col items-center gap-1 p-2" href="#accounts">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-gray-400">
+                        <rect width="20" height="14" x="2" y="5" rx="2"></rect>
+                        <line x1="2" x2="22" y1="10" y2="10"></line>
+                    </svg>
+                    <span class="text-xs text-gray-500">Accounts</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <script>
+        let currentTab = 'expense';
+
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('[data-tab]').forEach(tab => {
+                tab.classList.remove('tab-active');
+            });
+            
+            // Add active class to clicked tab
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('tab-active');
+            
+            // Update title and button text
+            const typeText = tabName.charAt(0).toUpperCase() + tabName.slice(1);
+            document.getElementById('transaction-type').textContent = typeText;
+            document.getElementById('button-type').textContent = typeText;
+            
+            // Update icon based on type
+            const titleIcon = document.getElementById('title-icon');
+            if (tabName === 'income') {
+                titleIcon.innerHTML = `
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="m16 12-4-4-4 4"></path>
+                    <path d="M12 16V8"></path>
+                `;
+            } else if (tabName === 'expense') {
+                titleIcon.innerHTML = `
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 8v8"></path>
+                    <path d="m8 12 4 4 4-4"></path>
+                `;
+            } else {
+                titleIcon.innerHTML = `
+                    <path d="M11 17h3v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a3.16 3.16 0 0 0 2-2h1a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1h-1a5 5 0 0 0-2-4V3a4 4 0 0 0-3.2 1.6l-.3.4H11a6 6 0 0 0-6 6v1a5 5 0 0 0 2 4v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1z"></path>
+                    <path d="M16 10h.01"></path>
+                    <path d="M2 8v1a2 2 0 0 0 2 2h1"></path>
+                `;
+            }
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            const amount = document.getElementById('amount').value;
+            const account = document.getElementById('account').value;
+            const category = document.getElementById('category').value;
+            const reason = document.getElementById('reason').value;
+            
+            const transaction = {
+                type: currentTab,
+                amount: amount,
+                account: account,
+                category: category,
+                description: reason,
+                date: new Date().toISOString()
+            };
+            
+            console.log('Transaction submitted:', transaction);
+            
+            // Show success message
+            alert(`${currentTab.charAt(0).toUpperCase() + currentTab.slice(1)} of ${amount} CFA added successfully!`);
+            
+            // Reset form
+            event.target.reset();
+            
+            // You can add your form submission logic here
+            // For example: send to backend API
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,292 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+ <div class="min-h-screen max-w-md mx-auto bg-white">
+        <!-- Header -->
+        <header class="sticky top-0 z-50 w-full border-b bg-white">
+            <div class="container flex h-16 items-center justify-between px-4">
+                <a class="flex items-center gap-2" href="/">
+                    <div class="h-10 w-10 relative bg-emerald-600 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">FF</span>
+                    </div>
+                    <span class="text-xl font-bold text-gray-900">FlowFunds</span>
+                </a>
+                <a href="/profile">
+                    <div class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity">
+                        <div class="flex flex-col items-end">
+                            <span class="text-sm font-semibold text-gray-900">Frederic Kouassi</span>
+                            <span class="text-xs text-gray-500">View Profile</span>
+                        </div>
+                        <div class="h-10 w-10 rounded-full overflow-hidden border-2 border-emerald-600 bg-gray-100">
+                            <div class="relative h-full w-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-full w-full p-2 text-gray-400">
+                                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="pb-16">
+            <div class="container px-4 py-6 pb-20">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-bold text-gray-900">Accounts</h1>
+                    <p class="text-gray-600">Manage your money across accounts</p>
+                </div>
+
+                <!-- My Card Section -->
+                <div class="mb-8">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">My Card</h2>
+                    <div class="flex flex-col w-full items-center">
+                        <div class="h-6 mb-2"></div>
+                        <div class="relative overflow-hidden flex flex-col justify-between bg-[#210D09ED] text-white h-48 w-full max-w-[320px] rounded-xl px-4 py-4 shadow-xl transition duration-400 hover:scale-105">
+                            <div class="flex gap-2 flex-col text-left">
+                                <div class="text-xs font-bold text-[#FFFCFC]">BANK OF RUQMANIA</div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" class="w-10 h-9">
+                                    <path fill="#FF9800" d="M5 35V13c0-2.2 1.8-4 4-4h30c2.2 0 4 1.8 4 4v22c0 2.2-1.8 4-4 4H9c-2.2 0-4-1.8-4-4z"></path>
+                                    <path fill="#FFD54F" d="M43 21v-2H31c-1.1 0-2-.9-2-2s.9-2 2-2h1v-2h-1c-2.2 0-4 1.8-4 4s1.8 4 4 4h3v6h-3c-2.8 0-5 2.2-5 5s2.2 5 5 5h2v-2h-2c-1.7 0-3-1.3-3-3s1.3-3 3-3h12v-2h-7v-6h7zm-26 6h-3v-6h3c2.2 0 4-1.8 4-4s-1.8-4-4-4h-3v2h3c1.1 0 2 .9 2 2s-.9 2-2 2H5v2h7v6H5v2h12c1.7 0 3 1.3 3 3s-1.3 3-3 3h-2v2h2c2.8 0 5-2.2 5-5s-2.2-5-5-5z"></path>
+                                </svg>
+                                <div class="mt-4">
+                                    <div class="flex items-center gap-2">
+                                        <svg width="13" height="15" viewBox="0 0 13 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-xl">
+                                            <path d="M12.5655 0.785121L12.701 14.4904L0.764073 7.75511L12.5655 0.785121Z" fill="#FFFEFE"></path>
+                                        </svg>
+                                        <input id="cardNumber" class="bg-transparent focus:outline-none border border-transparent focus:border-white/50 w-full text-lg tracking-widest font-mono placeholder:text-white/50" type="text" value="1234  5678  1234  5678" maxlength="23"/>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between mt-2">
+                                    <div class="text-[8px] uppercase tracking-wider opacity-80">DES RUQMANIA</div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[5px] leading-tight text-right">
+                                            VALID <br/>THRU
+                                        </span>
+                                        <input id="cardExpiry" class="bg-transparent focus:outline-none border border-transparent focus:border-white/50 w-12 text-sm font-mono placeholder:text-white/50" type="text" maxLength="5" value="06/29"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="absolute bottom-4 right-4 flex flex-col items-end">
+                                <svg width="48" height="38" viewBox="0 0 48 38" fill="none" class="w-12 h-9" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="33" cy="15" r="15" fill="#FF9548" fill-opacity="0.83"></circle>
+                                    <circle cx="15" cy="15" r="15" fill="#EA2F2F" fill-opacity="0.87"></circle>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary -->
+                <div class="rounded-lg bg-gray-50 p-4 mb-6">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-sm text-gray-600">Usable Money</p>
+                            <p class="text-xl font-bold text-gray-900" id="usableMoney">$2,545</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Net Worth</p>
+                            <p class="text-xl font-bold text-emerald-700" id="netWorth">$6,045</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Accounts -->
+                <div class="mb-8">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Active Accounts</h2>
+                    <div class="space-y-4" id="activeAccountsList">
+                        <!-- Cash Account -->
+                        <div class="bg-white flex flex-col gap-6 rounded-xl border shadow-sm p-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-gray-100 rounded-lg p-3 relative">
+                                       <div class="rounded-lg">
+                                        <img src="{% static 'images/aegt.png' %}" alt="MoMo" class="h-8 w-8 object-contain">
+                                       </div>
+                                        
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium text-gray-900">Cash</h3>
+                                        <p class="text-sm text-gray-600">Active account</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xl font-bold text-gray-900">1 250 FCFA</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MoMo Account -->
+                        <div class="bg-white flex flex-col gap-6 rounded-xl border shadow-sm p-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-yellow-500 rounded-lg p-3 relative">
+                                        <div class="h-6 w-6 relative flex items-center justify-center">
+                                            <span class="text-white font-bold text-xs">MTN</span>
+                                        </div>
+                                        <div class="rounded-lg">
+                                        <img src="{% static 'images/mobile.jpg' %}" alt="MoMo" class="h-8 w-8 object-contain">
+                                       </div>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium text-gray-900">MoMo</h3>
+                                        <p class="text-sm text-gray-600">Active account</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xl font-bold text-gray-900">875 FCFA</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Orange Money Account -->
+                        <div class="bg-white flex flex-col gap-6 rounded-xl border shadow-sm p-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-orange-500 rounded-lg p-3 relative">
+                                        <div class="h-6 w-6 relative flex items-center justify-center">
+                                            <span class="text-white font-bold text-xs">OM</span>
+                                        </div>
+                                         <div class="rounded-lg sm">
+                                         <img src="{% static 'images/oranges.png' %}" alt="Orange Money" class="h-8 w-8 object-contain">
+                                       </div>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium text-gray-900">Orange Money</h3>
+                                        <p class="text-sm text-gray-600">Active account</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xl font-bold text-gray-900">420 FCFA</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Savings -->
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Savings</h2>
+                    <div class="space-y-4">
+                        <div class="bg-white flex flex-col gap-6 rounded-xl border shadow-sm p-4 opacity-75">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-gray-100 rounded-lg p-3 relative">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-gray-700">
+                                            <path d="M12 10h.01"></path>
+                                            <path d="M12 14h.01"></path>
+                                            <path d="M12 6h.01"></path>
+                                            <path d="M16 10h.01"></path>
+                                            <path d="M16 14h.01"></path>
+                                            <path d="M16 6h.01"></path>
+                                            <path d="M8 10h.01"></path>
+                                            <path d="M8 14h.01"></path>
+                                            <path d="M8 6h.01"></path>
+                                            <path d="M9 22v-3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"></path>
+                                            <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium text-gray-900">Bank Savings</h3>
+                                        <p class="text-sm text-gray-600">Savings account</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xl font-bold text-gray-900">3 500 FCFA</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rounded-lg bg-blue-50 p-4">
+                            <p class="text-sm font-medium text-blue-800">Bank Account Info</p>
+                            <p class="text-xs text-blue-600 mt-1">This account is for savings only. Money can only be added through the "Save" transaction type.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="fixed bottom-0 left-0 right-0 z-50 border-t bg-white py-2 max-w-md mx-auto">
+            <div class="grid grid-cols-4">
+                <a class="flex flex-col items-center gap-1 p-2"  href="{% url 'index' %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-gray-400">
+                        <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
+                        <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    </svg>
+                    <span class="text-xs text-gray-500">Dashboard</span>
+                </a>
+                <a class="flex flex-col items-center gap-1 p-2" href="{% url 'add' %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-gray-400">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M8 12h8"></path>
+                        <path d="M12 8v8"></path>
+                    </svg>
+                    <span class="text-xs text-gray-500">Add</span>
+                </a>
+                <a class="flex flex-col items-center gap-1 p-2" href="{% url 'transaction' %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-gray-400">
+                        <path d="M3 5h.01"></path>
+                        <path d="M3 12h.01"></path>
+                        <path d="M3 19h.01"></path>
+                        <path d="M8 5h13"></path>
+                        <path d="M8 12h13"></path>
+                        <path d="M8 19h13"></path>
+                    </svg>
+                    <span class="text-xs text-gray-500">Transactions</span>
+                </a>
+                <a class="flex flex-col items-center gap-1 p-2" href="{% url 'account' %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-emerald-600">
+                        <rect width="20" height="14" x="2" y="5" rx="2"></rect>
+                        <line x1="2" x2="22" y1="10" y2="10"></line>
+                    </svg>
+                    <span class="text-xs text-emerald-600 font-medium">Accounts</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <script>
+        // Format card number with spaces
+        const cardNumberInput = document.getElementById('cardNumber');
+        cardNumberInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join('  ') || value;
+            e.target.value = formattedValue;
+        });
+
+        // Format expiry date
+        const cardExpiryInput = document.getElementById('cardExpiry');
+        cardExpiryInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.slice(0, 2) + '/' + value.slice(2, 4);
+            }
+            e.target.value = value;
+        });
+
+        // Calculate and update totals
+        function updateTotals() {
+            const accounts = [
+                { name: 'Cash', amount: 1250 },
+                { name: 'MoMo', amount: 875 },
+                { name: 'Orange Money', amount: 420 },
+                { name: 'Bank Savings', amount: 3500 }
+            ];
+
+            const usableMoney = accounts
+                .filter(acc => acc.name !== 'Bank Savings')
+                .reduce((sum, acc) => sum + acc.amount, 0);
+            
+            const netWorth = accounts.reduce((sum, acc) => sum + acc.amount, 0);
+
+            document.getElementById('usableMoney').textContent = `${usableMoney.toLocaleString()} FCFA`;
+            document.getElementById('netWorth').textContent = `${netWorth.toLocaleString()} FCFA`;
+        }
+
+        // Initialize on page load
+        updateTotals();
+    </script>
+{% endblock %}
