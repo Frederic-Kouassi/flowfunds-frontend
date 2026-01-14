@@ -1,23 +1,31 @@
 from django.shortcuts import render
+from django.views import View
 
-# Create your views here.
-def index(request):
-    return render (request, 'global_data/index.html')
-
-
-def transaction(request):
-    return render (request, 'global_data/transaction.html')
+class IndexView(View):
+    template=  'global_data/index.html'
+    def get(self, request):
+        return render(request,self.template)
 
 
-def profile (request):
-    return render (request, 'global_data/profile.html')
+class TransactionView(View):
+    template= 'global_data/transaction.html'
+    def get(self, request):
+        return render(request, self.template )
 
 
-def account (request):
-    
-    return render (request, 'global_data/account.html')
+class ProfileView(View):
+    template= 'global_data/profile.html'
+    def get(self, request):
+        return render(request, self.template )
 
 
-def add (request):
-    
-    return render (request, 'global_data/add.html')
+class AccountView(View):
+    template= 'global_data/account.html'
+    def get(self, request):
+        return render(request,self.template )
+
+
+class AddView(View):
+    template= 'global_data/add.html'
+    def get(self, request):
+        return render(request, self.template)
