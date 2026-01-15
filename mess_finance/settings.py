@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'finance',
     'django_extensions',
+    'tailwind',
+    'theme',
 ]
 
 MIDDLEWARE = [
@@ -105,6 +107,13 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+]
+
+
+
+TAILWIND_APP_NAME ="theme"
+INTERNAL_IPS= [
+    "127.0.0.1"
 ]
 
 

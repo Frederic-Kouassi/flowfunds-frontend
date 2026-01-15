@@ -16,14 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from finance.views import index, transaction, profile, account, add
+from finance.views import IndexView, TransactionView, ProfileView, AccountView, AddView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index, name="index"),
-     path('transaction', transaction, name="transaction"),
-      path('profile', profile, name="profile"),
-    path('account', account, name="account"),
-    path('add', add, name="add"),
+    path('', IndexView.as_view(), name="index"),
+    path('transaction/', TransactionView.as_view(), name="transaction"),
+    path('profile/', ProfileView.as_view(), name="profile"),
+    path('account/', AccountView.as_view(), name="account"),
+    path('add/', AddView.as_view(), name="add"),
 ]
 
