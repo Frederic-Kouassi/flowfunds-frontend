@@ -39,34 +39,55 @@
                 </div>
 
                 <div class="space-y-4">
-                    <div class="flex flex-col gap-2">
+                   <div class="flex flex-col gap-2">
+
                         <div class="flex gap-2">
+
+                            <!-- SEARCH (inchangé) -->
                             <div class="flex-1 relative">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400">
                                     <path d="m21 21-4.34-4.34"></path>
                                     <circle cx="11" cy="11" r="8"></circle>
                                 </svg>
-                                <input data-slot="input" class="h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none pl-10 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500" placeholder="Search transactions..." value=""/>
+
+                                <input
+                                    name="q"
+                                    class="h-9 w-full rounded-md border bg-transparent px-3 pl-10 text-base outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500"
+                                    placeholder="Search transactions..."
+                                />
                             </div>
-                            <button type="button" class="flex items-center justify-between gap-2 rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs transition-[color,box-shadow] outline-none h-9 w-[120px]">
-                                <div class="flex items-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
-                                        <path d="M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z"></path>
-                                    </svg>
-                                    <span></span>
-                                </div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 opacity-50">
-                                    <path d="m6 9 6 6 6-6"></path>
-                                </svg>
-                            </button>
+
+                            <!-- TYPE SELECT (corrigé) -->
+                            <select
+                                name="type"
+                                class="h-9 w-[120px] rounded-md border bg-transparent px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500"
+                            >
+                                <option value="">Type</option>
+                                <option value="income">Income</option>
+                                <option value="expense">Expense</option>
+                                <option value="save">Save</option>
+                            </select>
+
                         </div>
-                        <button type="button" class="flex items-center justify-between gap-2 rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs transition-[color,box-shadow] outline-none h-9 w-full">
-                            <span></span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 opacity-50">
-                                <path d="m6 9 6 6 6-6"></path>
-                            </svg>
-                        </button>
+
+                        <!-- CATEGORY SELECT (corrigé) -->
+                        <select
+                            name="category"
+                            class="h-9 w-full rounded-md border bg-transparent px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500"
+                        >
+                            <option value="">Category</option>
+                            <option value="food">Food</option>
+                            <option value="shopping">Shopping</option>
+                            <option value="transport">Transport</option>
+                            <option value="other">Other</option>
+                        </select>
+
                     </div>
+
 
                     <div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm">
                         <div class="divide-y">

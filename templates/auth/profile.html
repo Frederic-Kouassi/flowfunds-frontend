@@ -1,0 +1,258 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FlowFunds - Profile</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+body { font-family: 'Inter', sans-serif; }
+</style>
+</head>
+<body class="bg-gray-50">
+
+<div class="min-h-screen max-w-md mx-auto bg-white">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 w-full border-b bg-white">
+        <div class="container flex h-16 items-center justify-between px-4">
+            <a class="flex items-center gap-2" href="/">
+                 <div class="h-10 w-10 relative flex items-center justify-center rounded-lg bg-emerald-600 overflow-hidden">
+                    <img
+                        src="{% static 'images/logo.jpg' %}"
+                        alt="FlowFunds Logo"
+                        class="h-full w-full object-cover"
+                    >
+                </div>
+                <span class="text-xl font-bold text-gray-900">FlowFunds</span>
+            </a>
+            <a href="/profile">
+                <div class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity">
+                    <div class="flex flex-col items-end">
+                        <span class="text-sm font-semibold text-gray-900">{{ user.get_full_name }}</span>
+                        <span class="text-xs text-gray-500">View Profile</span>
+                    </div>
+                    <div class="h-10 w-10 rounded-full overflow-hidden border-2 border-emerald-600 bg-gray-100 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="pb-16">
+        <div class="min-h-screen bg-gray-50 pb-24">
+            <div class="container px-4 py-6 max-w-2xl mx-auto">
+
+                <!-- Back and title -->
+                <div class="mb-8">
+                    <a class="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4" href="/">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="m12 19-7-7 7-7"/>
+                            <path d="M19 12H5"/>
+                        </svg>
+                        Back to Dashboard
+                    </a>
+                    <h1 class="text-3xl font-bold text-gray-900">Profile & Settings</h1>
+                    <p class="text-gray-600 mt-2">Manage your account information</p>
+                </div>
+
+                <!-- Personal Info -->
+                <div class="bg-white flex flex-col gap-6 rounded-xl border shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-bold text-gray-900">Personal Information</h2>
+                        <button id="editBtn" class="inline-flex items-center justify-center text-sm font-medium h-8 rounded-md px-3 gap-2 border bg-white shadow-sm hover:bg-gray-50">
+                            Edit
+                        </button>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700">Full Name</label>
+                        <input type="text" value="{{ user.first_name }} {{ user.last_name }}" name="full_name" class="w-full rounded-md border bg-gray-50 px-3 py-1 h-12" readonly>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" value="{{ user.email }}" name="email" class="w-full rounded-md border bg-gray-50 px-3 py-1 h-12" readonly>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700">Phone</label>
+                        <input type="tel" value="{{ user.phone_number }}" name="phone" class="w-full rounded-md border bg-gray-50 px-3 py-1 h-12" readonly>
+                    </div>
+                </div>
+
+                <!-- Linked Accounts -->
+                <div class="bg-white flex flex-col gap-6 rounded-xl border shadow-sm p-6 mt-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900">Linked Accounts</h2>
+                            <p class="text-sm text-gray-600 mt-1">Manage your MoMo and Orange Money accounts</p>
+                        </div>
+                        <button id="addBtn" class="inline-flex items-center justify-center rounded-md text-sm font-medium h-9 px-4 py-2 gap-2 bg-emerald-600 hover:bg-emerald-700 text-white">
+                            Add Account
+                        </button>
+                    </div>
+
+                   <div class="space-y-3" id="list">
+                    {% for account in linked_accounts %}
+                    <div class="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
+                        <div class="flex items-center gap-3">
+
+                            <!-- Logo -->
+                            <div class="h-10 w-10
+                                {% if account.type_compte == 'MTN' %} bg-yellow-500
+                                {% elif account.type_compte == 'Orange' %} bg-orange-500
+                                {% else %} bg-gray-400
+                                {% endif %}
+                                rounded-lg flex items-center justify-center">
+                                <span class="text-white font-bold text-xs">
+                                    {% if account.type_compte == 'MTN' %} MTN
+                                    {% elif account.type_compte == 'Orange' %} OM
+                                    {% endif %}
+                                </span>
+                            </div>
+
+                            <!-- Infos -->
+                            <div>
+                                <p class="font-medium text-gray-900">{{ account.get_type_compte_display }}</p>
+                                <p class="text-sm text-gray-600">{{ account.phone }}</p>
+                                <p class="text-xs text-gray-500">{{ account.label }}</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-gray-500">No linked accounts yet.</p>
+                    {% endfor %}
+                   </div>
+
+                </div>
+
+                <!-- Security -->
+                <div class="bg-white flex flex-col gap-6 rounded-xl border shadow-sm p-6 mt-6">
+                    <div class="mb-6">
+                        <h2 class="text-xl font-bold text-gray-900">Security</h2>
+                        <p class="text-sm text-gray-600 mt-1">Manage your password</p>
+                    </div>
+                    <form id="passForm" method="POST">
+                        {% csrf_token %}
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium">Current Password</label>
+                            <input type="password" name="current_password" placeholder="Enter current password" class="w-full rounded-md border px-3 py-1 h-12">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium">New Password</label>
+                            <input type="password" name="new_password" placeholder="Enter new password" class="w-full rounded-md border px-3 py-1 h-12">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium">Confirm Password</label>
+                            <input type="password" name="confirm_password" placeholder="Confirm password" class="w-full rounded-md border px-3 py-1 h-12">
+                        </div>
+                        <button type="submit" class="w-full h-12 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md font-medium">Change Password</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Edit Info Modal -->
+    <div id="editModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-md w-full p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-bold">Edit Personal Information</h3>
+                <button id="closeEdit" class="text-gray-400 hover:text-gray-600">&times;</button>
+            </div>
+            <form id="editForm" method="POST" class="space-y-4">
+                {% csrf_token %}
+                <div class="space-y-2">
+                    <label class="text-sm font-medium">Full Name</label>
+                    <input type="text" name="full_name" id="editName" class="w-full rounded-md border px-3 py-1 h-12" value="{{ user.first_name }} {{ user.last_name }}">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-medium">Email</label>
+                    <input type="email" name="email" id="editEmail" class="w-full rounded-md border px-3 py-1 h-12" value="{{ user.email }}">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-medium">Phone</label>
+                    <input type="tel" name="phone" id="editPhone" class="w-full rounded-md border px-3 py-1 h-12" value="{{ user.phone_number }}">
+                </div>
+                <div class="flex gap-3">
+                    <button type="button" id="cancelEdit" class="flex-1 h-12 border rounded-md hover:bg-gray-50 font-medium">Cancel</button>
+                    <button type="submit" class="flex-1 h-12 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md font-medium">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Account Modal -->
+    <div id="addModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-md w-full p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-bold">Add Account</h3>
+                <button id="closeAdd" class="text-gray-400 hover:text-gray-600">&times;</button>
+            </div>
+            <form id="addForm" method="POST" class="space-y-4">
+                {% csrf_token %}
+                <div class="space-y-2">
+                    <label class="text-sm font-medium">Account Type</label>
+                    <select name="type_compte" id="type" class="w-full rounded-md border px-3 py-1 h-12" required>
+                        <option value="">Select type</option>
+                        <option value="MTN">MTN Mobile Money</option>
+                        <option value="Orange">Orange Money</option>
+                    </select>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-medium">Phone</label>
+                    <input type="tel" name="phone" id="accPhone" class="w-full rounded-md border px-3 py-1 h-12" placeholder="+237 6XX XXX XXX" required>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-medium">Label</label>
+                    <input type="text" name="label" id="accLabel" class="w-full rounded-md border px-3 py-1 h-12" placeholder="Personal, Business" required>
+                </div>
+                <button type="submit" class="w-full h-12 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md font-medium">Add</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<!-- JS modals -->
+<script>
+const editBtn = document.getElementById('editBtn');
+const editModal = document.getElementById('editModal');
+const closeEdit = document.getElementById('closeEdit');
+const cancelEdit = document.getElementById('cancelEdit');
+
+const nameInput = document.querySelector('input[name="full_name"]');
+const emailInput = document.querySelector('input[name="email"]');
+const phoneInput = document.querySelector('input[name="phone"]');
+
+const editName = document.getElementById('editName');
+const editEmail = document.getElementById('editEmail');
+const editPhone = document.getElementById('editPhone');
+
+editBtn.onclick = () => {
+    editName.value = nameInput.value;
+    editEmail.value = emailInput.value;
+    editPhone.value = phoneInput.value;
+    editModal.classList.remove('hidden');
+};
+closeEdit.onclick = cancelEdit.onclick = () => editModal.classList.add('hidden');
+editModal.onclick = e => { if(e.target===editModal) editModal.classList.add('hidden'); };
+
+const addBtn = document.getElementById('addBtn');
+const addModal = document.getElementById('addModal');
+const closeAdd = document.getElementById('closeAdd');
+addBtn.onclick = () => addModal.classList.remove('hidden');
+closeAdd.onclick = () => addModal.classList.add('hidden');
+addModal.onclick = e => { if(e.target===addModal) addModal.classList.add('hidden'); };
+</script>
+
+</body>
+</html>

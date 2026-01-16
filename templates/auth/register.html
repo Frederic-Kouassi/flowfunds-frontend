@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+ <div class="min-h-screen max-w-md mx-auto bg-white">
+        <!-- Header -->
+        <header class="sticky top-0 z-50 w-full border-b bg-white">
+            <div class="container flex h-16 items-center justify-between px-4">
+                <a class="flex items-center gap-2" href="/">
+                    <div class="h-10 w-10 relative flex items-center justify-center rounded-lg bg-emerald-600 overflow-hidden">
+                    <img
+                        src="{% static 'images/logo.jpg' %}"
+                        alt="FlowFunds Logo"
+                        class="h-full w-full object-cover"
+                    >
+                </div>
+
+                    <span class="text-xl font-bold text-gray-900">FlowFunds</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="pb-16">
+            <div class="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+                <div class="bg-white text-gray-900 flex flex-col gap-6 rounded-xl border shadow-sm w-full max-w-md py-6">
+                    <!-- Card Header -->
+                    <div class="px-6 space-y-1 flex flex-col items-center">
+                        <div class="h-10 w-10 relative flex items-center justify-center rounded-lg bg-emerald-600 overflow-hidden">
+                    <img
+                        src="{% static 'images/logo.jpg' %}"
+                        alt="FlowFunds Logo"
+                        class="h-full w-full object-cover"
+                    >
+                </div>
+                        <h2 class="text-2xl font-bold text-center text-emerald-700">Create Account</h2>
+                        <p class="text-gray-500 text-sm text-center">Join FlowFunds to track your finances today</p>
+                    </div>
+
+                    <!-- Form -->
+                    <form id="registerForm" method="post" action="{% url 'register' %}">
+                        {% csrf_token %}
+                        <div class="px-6 space-y-4">
+                            <!-- First Name -->
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-2 text-sm leading-none font-medium" for="first_name">First Name</label>
+                                <input type="text" name="first_name" id="first_name" placeholder="John" required
+                                    class="border border-gray-300 h-9 w-full rounded-md px-3 py-1 outline-none focus:border-emerald-600 focus:ring-3 focus:ring-emerald-600/20">
+                            </div>
+
+                            <!-- Last Name -->
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-2 text-sm leading-none font-medium" for="last_name">Last Name</label>
+                                <input type="text" name="last_name" id="last_name" placeholder="Doe"
+                                    class="border border-gray-300 h-9 w-full rounded-md px-3 py-1 outline-none focus:border-emerald-600 focus:ring-3 focus:ring-emerald-600/20">
+                            </div>
+
+                            <!-- Phone Number -->
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-2 text-sm leading-none font-medium" for="phone_number">Phone Number</label>
+                                <input type="tel" name="phone_number" id="phone_number" placeholder="600000000" required
+                                    class="border border-gray-300 h-9 w-full rounded-md px-3 py-1 outline-none focus:border-emerald-600 focus:ring-3 focus:ring-emerald-600/20">
+                            </div>
+
+                            <!-- Initial Balance -->
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-2 text-sm leading-none font-medium" for="initial_balance">Initial Balance (XAF)</label>
+                                <input type="number" name="initial_balance" id="initial_balance" placeholder="50000" min="0" step="0.01" required
+                                    class="border border-gray-300 h-9 w-full rounded-md px-3 py-1 outline-none focus:border-emerald-600 focus:ring-3 focus:ring-emerald-600/20">
+                            </div>
+
+                            <!-- Password -->
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-2 text-sm leading-none font-medium" for="password">Password</label>
+                                <input type="password" name="password" id="password" placeholder="••••••••" required
+                                    class="border border-gray-300 h-9 w-full rounded-md px-3 py-1 outline-none focus:border-emerald-600 focus:ring-3 focus:ring-emerald-600/20">
+                            </div>
+
+                            <!-- Confirm Password -->
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-2 text-sm leading-none font-medium" for="password_confirm">Confirm Password</label>
+                                <input type="password" name="password_confirm" id="password_confirm" placeholder="••••••••" required
+                                    class="border border-gray-300 h-9 w-full rounded-md px-3 py-1 outline-none focus:border-emerald-600 focus:ring-3 focus:ring-emerald-600/20">
+                            </div>
+                        </div>
+
+                        <!-- Card Footer -->
+                        <div class="px-6 flex flex-col space-y-4 mt-6">
+                            <button type="submit" class="w-full h-9 bg-emerald-600 text-white rounded-md hover:bg-emerald-700">Sign Up</button>
+                            <div class="text-center text-sm">
+                                Already have an account?
+                                <a class="font-medium text-emerald-600 hover:underline" href="{% url 'login' %}">Sign in</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+{% endblock %}

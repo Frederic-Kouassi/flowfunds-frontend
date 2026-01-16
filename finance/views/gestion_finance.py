@@ -1,5 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render,  redirect
 from django.views import View
+from django.contrib import messages
+
+
+
+
 
 class IndexView(View):
     template=  'global_data/index.html'
@@ -12,11 +17,6 @@ class TransactionView(View):
     def get(self, request):
         return render(request, self.template )
 
-
-class ProfileView(View):
-    template= 'global_data/profile.html'
-    def get(self, request):
-        return render(request, self.template )
 
 
 class AccountView(View):

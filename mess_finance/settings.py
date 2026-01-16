@@ -110,6 +110,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+AUTH_USER_MODEL = "finance.Utilisateur"
+
 
 TAILWIND_APP_NAME ="theme"
 INTERNAL_IPS= [
