@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="min-h-screen max-w-md mx-auto bg-white">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 w-full border-b bg-white">
+        <div class="container flex h-16 items-center justify-between px-4">
+            <a class="flex items-center gap-2" href="/">
+                <div class="h-10 w-10 bg-emerald-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-xl">FF</span>
+                </div>
+                <span class="text-xl font-bold text-gray-900">FlowFunds</span>
+            </a>
+            <a href="#profile">
+                <div class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity">
+                    <div class="flex flex-col items-end">
+                        <span class="text-sm font-semibold text-gray-900">{{ user.first_name }} {{ user.last_name }}</span>
+                        <span class="text-xs text-gray-500">View Profile</span>
+                    </div>
+                    <div class="h-10 w-10 rounded-full overflow-hidden border-2 border-emerald-600 bg-gray-100 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400">
+                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pb-16">
+        <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 pb-24">
+            <div class="container px-4 py-8 max-w-lg mx-auto">
+                <!-- Page Title -->
+                <div class="mb-8 text-center">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-50 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-emerald-600" id="title-icon">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 8v8"></path>
+                            <path d="m8 12 4 4 4-4"></path>
+                        </svg>
+                    </div>
+                    <h1 class="text-3xl font-bold text-gray-900">Add <span id="transaction-type">Expense</span></h1>
+                    <p class="text-gray-600 mt-2">Track your financial activity</p>
+                </div>
+
+                <!-- Transaction Type Tabs -->
+                <div class="bg-white rounded-xl border shadow-sm p-2 mb-6">
+                    <div class="bg-gray-100 rounded-lg grid grid-cols-3 w-full h-auto p-1">
+                        <button type="button" class="flex flex-col items-center gap-2 py-3 rounded-md border border-transparent px-2 text-sm font-medium transition-all" data-tab="income" onclick="switchTab('income')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="m16 12-4-4-4 4"></path>
+                                <path d="M12 16V8"></path>
+                            </svg>
+                            <span class="text-xs font-medium">Income</span>
+                        </button>
+                        <button type="button" class="flex flex-col items-center gap-2 py-3 rounded-md border border-transparent px-2 text-sm font-medium transition-all tab-active" data-tab="expense" onclick="switchTab('expense')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M12 8v8"></path>
+                                <path d="m8 12 4 4 4-4"></path>
+                            </svg>
+                            <span class="text-xs font-medium">Expense</span>
+                        </button>
+                        <button type="button" class="flex flex-col items-center gap-2 py-3 rounded-md border border-transparent px-2 text-sm font-medium transition-all" data-tab="save" onclick="switchTab('save')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+                                <path d="M11 17h3v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a3.16 3.16 0 0 0 2-2h1a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1h-1a5 5 0 0 0-2-4V3a4 4 0 0 0-3.2 1.6l-.3.4H11a6 6 0 0 0-6 6v1a5 5 0 0 0 2 4v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1z"></path>
+                                <path d="M16 10h.01"></path>
+                                <path d="M2 8v1a2 2 0 0 0 2 2h1"></path>
+                            </svg>
+                            <span class="text-xs font-medium">Save</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Transaction Form -->
+                <div class="bg-white rounded-xl border shadow-sm p-6">
+                     <!-- Messages -->
+                    {% if messages %}
+                      <div class="mb-4">
+                        {% for message in messages %}
+                          <div class="p-3 mb-2 rounded-md 
+                                      {% if message.tags == 'error' %}bg-red-100 text-red-700
+                                      {% elif message.tags == 'success' %}bg-green-100 text-green-700
+                                      {% else %}bg-gray-100 text-gray-700{% endif %}">
+                            {{ message }}
+                          </div>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                    <form method="POST" class="space-y-6">
+                        {% csrf_token %}
+                        <!-- Hidden Type Transaction -->
+                        <input type="hidden" name="type_transaction" id="type_transaction" value="DEPENSE">
+
+                        <!-- Amount -->
+                        <div class="space-y-3">
+                            <label class="flex items-center gap-2 text-base font-semibold text-gray-700" for="amount">Amount (CFA)</label>
+                            <input type="number" name="montant" id="amount" required class="w-full rounded-md border-2 border-gray-300 px-3 py-2 focus:border-emerald-500 focus:ring-emerald-500/50 focus:ring-3 outline-none transition-all">
+                        </div>
+
+                        <!-- Account -->
+                        <div class="space-y-3">
+                            <label class="flex items-center gap-2 text-base font-semibold text-gray-700" for="account">Account</label>
+                            <select name="compte" id="account" required class="w-full h-12 rounded-md border-2 border-gray-300 px-3 py-2 focus:border-emerald-500 focus:ring-emerald-500/50 focus:ring-3 outline-none transition-all">
+                                <option value="">Select account</option>
+                                <option value="Especes">Cash</option>
+                                <option value="momo">MoMo</option>
+                                <option value="orange">Orange Money</option>
+                                <option value="banque">Bank Savings</option>
+                            </select>
+                        </div>
+
+                        <!-- Category -->
+                        <div class="space-y-3">
+                            <label class="flex items-center gap-2 text-base font-semibold text-gray-700" for="category">Category</label>
+                            <select name="categorie" id="category" required class="w-full h-12 rounded-md border-2 border-gray-300 px-3 py-2 focus:border-emerald-500 focus:ring-emerald-500/50 focus:ring-3 outline-none transition-all">
+                                <option value="">Select category</option>
+                                <option value="nourriture">Food & Dining</option>
+                                <option value="transport">Transportation</option>
+                                <option value="shopping">Shopping</option>
+                                <option value="loisirs">Entertainment</option>
+                                <option value="factures">Bills & Utilities</option>
+                                <option value="sante">Health</option>
+                                <option value="education">Education</option>
+                                <option value="autre">Other</option>
+                            </select>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="space-y-3">
+                            <label class="flex items-center gap-2 text-base font-semibold text-gray-700" for="reason">Description</label>
+                            <input type="text" name="description" id="reason" class="w-full h-12 rounded-md border-2 border-gray-300 px-3 py-2 focus:border-emerald-500 focus:ring-emerald-500/50 focus:ring-3 outline-none transition-all">
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="w-full h-14 text-lg font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-md transition-all">
+                            Add <span id="button-type">Expense</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    let currentTab = 'expense';
+    const typeMap = { income: 'REVENU', expense: 'DEPENSE', save: 'ECHEC' };
+
+    function switchTab(tabName) {
+        currentTab = tabName;
+        document.getElementById('type_transaction').value = typeMap[tabName];
+        document.getElementById('transaction-type').textContent = tabName.charAt(0).toUpperCase() + tabName.slice(1);
+        document.getElementById('button-type').textContent = tabName.charAt(0).toUpperCase() + tabName.slice(1);
+
+        // Update icon
+        const titleIcon = document.getElementById('title-icon');
+        if(tabName === 'income') {
+            titleIcon.innerHTML = `<circle cx="12" cy="12" r="10"></circle><path d="m16 12-4-4-4 4"></path><path d="M12 16V8"></path>`;
+        } else if(tabName === 'expense') {
+            titleIcon.innerHTML = `<circle cx="12" cy="12" r="10"></circle><path d="M12 8v8"></path><path d="m8 12 4 4 4-4"></path>`;
+        } else {
+            titleIcon.innerHTML = `<path d="M11 17h3v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a3.16 3.16 0 0 0 2-2h1a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1h-1a5 5 0 0 0-2-4V3a4 4 0 0 0-3.2 1.6l-.3.4H11a6 6 0 0 0-6 6v1a5 5 0 0 0 2 4v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1z"></path>
+            <path d="M16 10h.01"></path><path d="M2 8v1a2 2 0 0 0 2 2h1"></path>`;
+        }
+    }
+</script>
+
+{% endblock %}

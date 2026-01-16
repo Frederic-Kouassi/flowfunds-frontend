@@ -118,3 +118,98 @@ class Compte(models.Model):
 
     def __str__(self):
         return f"{self.get_account_type_display()} - {self.phone}"
+    
+    
+    
+class Transaction(BlogBaseModel):
+    TYPE_TRANSACTION = [
+        ('REVENU', 'Revenu'),
+        ('DEPENSE', 'Dépense'),
+        ('ECHEC', 'Épargne'),
+    ]
+
+    COMPTES = [
+        ('Especes', 'Especes'),
+        ('momo', 'MoMo'),
+        ('orange', 'Orange Money'),
+        ('banque', 'Épargne bancaire'),
+    ]
+
+    CATEGORIES = [
+        ('nourriture', 'Alimentation & Restaurants'),
+        ('transport', 'Transport'),
+        ('shopping', 'Shopping'),
+        ('loisirs', 'Loisirs & Divertissement'),
+        ('factures', 'Factures & Services'),
+        ('sante', 'Santé'),
+        ('education', 'Éducation'),
+        ('autre', 'Autre'),
+    ]
+
+    utilisateur = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='transactions'
+    )
+    type_transaction = models.CharField(
+        max_length=10,
+        choices=TYPE_TRANSACTION,
+        default='DEPENSE',
+        verbose_name="Type de transaction"
+    )
+    montant = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        verbose_name="Montant (CFA)"
+    )
+    compte = models.CharField(
+        max_length=20,
+        choices=COMPTES,
+        verbose_name="Compte"
+    )
+    categorie = models.CharField(
+        max_length=50,
+        choices=CATEGORIES,
+        verbose_name="Catégorie"
+    )
+    description = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name="Description"
+    )
+    date = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Date"
+    )
+
+    class Meta:
+        ordering = ['-date']
+        verbose_name = "Transaction"
+        verbose_name_plural = "Transactions"
+
+    def __str__(self):
+        return f"{self.get_type_transaction_display()} - {self.montant} CFA - {self.compte}"
+
+    # 🔹 Surcharge de save() pour mettre à jour le solde utilisateur
+    def save(self, *args, **kwargs):
+        # Vérifie si c'est une nouvelle transaction
+        is_new = self.pk is None
+
+        super().save(*args, **kwargs)  # on sauvegarde d'abord pour générer la PK si nouvelle
+
+        if is_new:
+            user = self.utilisateur
+            # On initialise le balance si inexistant
+            if not hasattr(user, 'balance'):
+                user.balance = getattr(user, 'initial_balance', 0)
+
+            # Met à jour le solde selon le type
+            if self.type_transaction == 'DEPENSE':
+                user.balance -= self.montant
+            elif self.type_transaction == 'REVENU':
+                user.balance += self.montant
+            elif self.type_transaction == 'ECHEC':  # Épargne, à adapter selon logique
+                user.balance -= self.montant
+
+   
