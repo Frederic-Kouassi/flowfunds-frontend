@@ -17,27 +17,36 @@ class IndexView(LoginRequiredMixin, View):
     template_name = 'global_data/index.html'
 
     def get(self, request):
-        user = request.user  # ici user est FORCÉMENT connecté
+        user = request.user
 
-        # Récupérer toutes les transactions de l'utilisateur
-        transactions = user.transactions.all().order_by('-date')
+        # 🔹 Fonction utilitaire pour calculer le solde par compte
+        def solde(compte):
+            revenus = user.transactions.filter(
+                compte=compte,
+                type_transaction='REVENU'
+            ).aggregate(total=Sum('montant'))['total'] or 0
 
-        # Calculer le solde
-        solde = getattr(user, 'initial_balance', 0)
-        for t in transactions:
-            if t.type_transaction == 'REVENU':
-                solde += t.montant
-            elif t.type_transaction == 'DEPENSE':
-                solde -= t.montant
-            elif t.type_transaction == 'ECHEC':
-                solde -= t.montant
+            depenses = user.transactions.filter(
+                compte=compte,
+                type_transaction='DEPENSE'
+            ).aggregate(total=Sum('montant'))['total'] or 0
+
+            return revenus - depenses
+
+        # 🔹 Soldes par compte
+        solde_cash = solde('Especes')
+        solde_momo = solde('momo')
+        solde_orange = solde('orange')
+
+        # 🔹 Argent utilisable
+        usable_money = solde_cash + solde_momo + solde_orange
 
         return render(request, self.template_name, {
-            'user': user,
-            'transactions': transactions,
-            'solde': solde
+            'solde_cash': solde_cash,
+            'solde_momo': solde_momo,
+            'solde_orange': solde_orange,
+            
         })
-
 class TransactionView(View):
     template= 'global_data/transaction.html'
     def get(self, request):
