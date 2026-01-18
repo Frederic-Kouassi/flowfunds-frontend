@@ -42,11 +42,16 @@ class IndexView(LoginRequiredMixin, View):
         # 🔹 Argent utilisable
         usable_money = solde_cash + solde_momo + solde_orange
 
+        # 🔹 Épargne (Savings)
+        
+        
+
         return render(request, self.template_name, {
             'solde_cash': solde_cash,
             'solde_momo': solde_momo,
             'solde_orange': solde_orange,
              'transaction': transactions,
+              'usable_money': usable_money,
             
         })
 class TransactionView(View):
