@@ -8,12 +8,12 @@
         <header class="sticky top-0 z-50 w-full border-b bg-white">
             <div class="container flex h-16 items-center justify-between px-4">
                 <a class="flex items-center gap-2" href="/">
-                    <div class="h-10 w-10 relative bg-emerald-600 rounded-lg flex items-center justify-center">
-                        <span class="text-white font-bold text-xl">FF</span>
+                     <div class="h-10 w-10 relative rounded-lg flex items-center justify-center bg-emerald-600">
+                        <img src="{% static 'images/logo.jpg' %}" alt="Logo" class="h-full w-full object-cover rounded-lg">
                     </div>
                     <span class="text-xl font-bold text-gray-900">FlowFunds</span>
                 </a>
-                <a href="/profile">
+                <a href="{% url 'profile' %}">
                     <div class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity">
                         <div class="flex flex-col items-end">
                             <span class="text-sm font-semibold text-gray-900">Frederic Kouassi</span>
@@ -81,18 +81,23 @@
                 </div>
 
                 <!-- Summary -->
-                <div class="rounded-lg bg-gray-50 p-4 mb-6">
+                     <div class="rounded-lg bg-gray-50 p-4 mb-6">
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <p class="text-sm text-gray-600">Usable Money</p>
-                            <p class="text-xl font-bold text-gray-900" id="usableMoney">$2,545</p>
+                            <p class="text-xl font-bold text-gray-900">
+                                {{ usable_money|floatformat:0 }} FCFA
+                            </p>
                         </div>
                         <div>
                             <p class="text-sm text-gray-600">Net Worth</p>
-                            <p class="text-xl font-bold text-emerald-700" id="netWorth">$6,045</p>
+                            <p class="text-xl font-bold text-emerald-700">
+                                {{ net_worth|floatformat:0 }} FCFA
+                            </p>
                         </div>
                     </div>
                 </div>
+
 
                 <!-- Active Accounts -->
                 <div class="mb-8">
@@ -114,7 +119,9 @@
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                    <p class="text-xl font-bold text-gray-900">1 250 FCFA</p>
+                                   <p class="text-xl font-bold text-gray-900">
+                                 {{ solde_cash|floatformat:0 }} FCFA
+                                      </p>
                                 </div>
                             </div>
                         </div>
@@ -137,7 +144,10 @@
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                    <p class="text-xl font-bold text-gray-900">875 FCFA</p>
+                                   <p class="text-xl font-bold text-gray-900">
+                                  {{ solde_momo|floatformat:0 }} FCFA
+                                    </p>
+
                                 </div>
                             </div>
                         </div>
@@ -160,7 +170,10 @@
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                    <p class="text-xl font-bold text-gray-900">420 FCFA</p>
+                                   <p class="text-2xl font-bold text-gray-900">
+                                {{ solde_orange|floatformat:0 }} FCFA
+                               </p>
+
                                 </div>
                             </div>
                         </div>
@@ -195,7 +208,7 @@
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                    <p class="text-xl font-bold text-gray-900">3 500 FCFA</p>
+                                    <p class="text-xl font-bold text-gray-900">{{ epargne }}FCFA</p>
                                 </div>
                             </div>
                         </div>

@@ -2,6 +2,7 @@ from django.shortcuts import render,  redirect
 from django.views import View
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.db.models import Sum
 
 from finance.models import *
 
@@ -65,12 +66,57 @@ class TransactionView(View):
 
 
 
+from django.db.models import Sum
+from django.views import View
+from django.shortcuts import render
+from django.db.models import Sum
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class AccountView(View):
-    template= 'global_data/account.html'
+
+class AccountView(LoginRequiredMixin, View):
+    template = 'global_data/account.html'
+
     def get(self, request):
-        return render(request,self.template )
+        user = request.user
 
+        # 🔹 Fonction utilitaire pour calculer le solde par compte
+        def solde(compte):
+            revenus = user.transactions.filter(
+                compte=compte,
+                type_transaction='REVENU'
+            ).aggregate(total=Sum('montant'))['total'] or 0
+
+            depenses = user.transactions.filter(
+                compte=compte,
+                type_transaction='DEPENSE'
+            ).aggregate(total=Sum('montant'))['total'] or 0
+
+            return revenus - depenses
+
+        # 🔹 Soldes par compte
+        solde_cash = solde('Especes')
+        solde_momo = solde('momo')
+        solde_orange = solde('orange')
+
+        # 🔹 Argent utilisable
+        usable_money = solde_cash + solde_momo + solde_orange
+
+        # 🔹 Épargne (Savings)
+        epargne = user.transactions.filter(
+            type_transaction='ECHEC'
+        ).aggregate(total=Sum('montant'))['total'] or 0
+
+        # 🔹 Valeur nette
+        net_worth = usable_money + epargne
+
+        return render(request, self.template, {
+            'solde_cash': solde_cash,
+            'solde_momo': solde_momo,
+            'solde_orange': solde_orange,
+            'usable_money': usable_money,
+            'epargne': epargne,
+            'net_worth': net_worth,
+        })
 
 class AddView(View):
     template= 'global_data/add.html'
