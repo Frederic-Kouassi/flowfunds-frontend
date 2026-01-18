@@ -117,8 +117,8 @@ class Compte(models.Model):
     )
 
     def __str__(self):
-        return f"{self.get_account_type_display()} - {self.phone}"
-    
+     return f"{self.get_type_compte_display()} - {self.phone}"  # <-- idem
+
     
     
 class Transaction(BlogBaseModel):

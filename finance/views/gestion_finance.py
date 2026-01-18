@@ -82,12 +82,6 @@ class TransactionView(View):
 
 
 
-from django.db.models import Sum
-from django.views import View
-from django.shortcuts import render
-from django.db.models import Sum
-from django.contrib.auth.mixins import LoginRequiredMixin
-
 
 class AccountView(LoginRequiredMixin, View):
     template = 'global_data/account.html'
@@ -135,35 +129,47 @@ class AccountView(LoginRequiredMixin, View):
         })
 
 class AddView(View):
-    template= 'global_data/add.html'
+    template = 'global_data/add.html'
+
     def get(self, request):
         return render(request, self.template)
     
     def post(self, request):
         user = request.user
         type_transaction = request.POST.get('type_transaction')
-        montant = float(request.POST.get('montant', 0))
         compte = request.POST.get('compte')
         categorie = request.POST.get('categorie')
         description = request.POST.get('description')
 
-        # Calculer le solde actuel
-        transactions = user.transactions.all()
-        solde = getattr(user, 'initial_balance', 0)
-        for t in transactions:
-            if t.type_transaction == 'REVENU':
-                solde += t.montant
-            elif t.type_transaction == 'DEPENSE':
-                solde -= t.montant
-            elif t.type_transaction == 'ECHEC':
-                solde -= t.montant  # si on considère l'épargne comme un débit
+        # 🔹 Récupérer le montant et vérifier qu'il est positif
+        try:
+            montant = float(request.POST.get('montant', 0))
+            if montant <= 0:
+                messages.error(request, "Le montant doit être supérieur à 0 !")
+                return redirect('add')
+        except ValueError:
+            messages.error(request, "Montant invalide !")
+            return redirect('add')
 
-        # Vérifier si le solde est suffisant pour une dépense
-        if type_transaction == 'DEPENSE' and montant > solde:
-            messages.error(request, "Vous n'avez pas assez de solde pour effectuer cette dépense !")
-            return redirect('add')  # ou reste sur le formulaire
+        # 🔹 Calculer le solde du compte sélectionné
+        revenus = user.transactions.filter(
+            compte=compte,
+            type_transaction='REVENU'
+        ).aggregate(total=Sum('montant'))['total'] or 0
 
-        # Créer la transaction
+        depenses = user.transactions.filter(
+            compte=compte,
+            type_transaction__in=['DEPENSE', 'ECHEC']
+        ).aggregate(total=Sum('montant'))['total'] or 0
+
+        solde_compte = revenus - depenses
+
+        # 🔹 Vérifier si solde suffisant pour une dépense
+        if type_transaction == 'DEPENSE' and montant > solde_compte:
+            messages.error(request, f"Solde insuffisant pour le compte {compte.upper()} ! Solde actuel : {solde_compte} FCFA")
+            return redirect('add')
+
+        # 🔹 Créer la transaction
         Transaction.objects.create(
             utilisateur=user,
             type_transaction=type_transaction,
@@ -173,7 +179,5 @@ class AddView(View):
             description=description
         )
 
-        messages.success(request, f"{type_transaction.capitalize()} de {montant} CFA ajouté avec succès !")
+        messages.success(request, f"{type_transaction.capitalize()} de {montant} FCFA ajouté avec succès !")
         return redirect('index')
-   
-
