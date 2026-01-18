@@ -1,17 +1,7 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>FlowFunds - Profile</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-body { font-family: 'Inter', sans-serif; }
-</style>
-</head>
-<body class="bg-gray-50">
+
+{% block content %}
 
 <div class="min-h-screen max-w-md mx-auto bg-white">
 
@@ -32,7 +22,7 @@ body { font-family: 'Inter', sans-serif; }
                 <div class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity">
                     <div class="flex flex-col items-end">
                         <span class="text-sm font-semibold text-gray-900">{{ user.get_full_name }}</span>
-                        <span class="text-xs text-gray-500">View Profile</span>
+                        <a href="{% url 'logout' %}"><span class="text-xs text-gray-500">lagout</span></a>
                     </div>
                     <div class="h-10 w-10 rounded-full overflow-hidden border-2 border-emerald-600 bg-gray-100 flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
@@ -73,8 +63,8 @@ body { font-family: 'Inter', sans-serif; }
                     </div>
 
                     <div class="space-y-2">
-                        <label class="text-sm font-medium text-gray-700">Full Name</label>
-                        <input type="text" value="{{ user.first_name }} {{ user.last_name }}" name="full_name" class="w-full rounded-md border bg-gray-50 px-3 py-1 h-12" readonly>
+                        <label class="text-sm font-medium text-gray-700"> Name</label>
+                        <input type="text" value="{{ user.first_name }}" name="full_name" class="w-full rounded-md border bg-gray-50 px-3 py-1 h-12" readonly>
                     </div>
                     <div class="space-y-2">
                         <label class="text-sm font-medium text-gray-700">Email</label>
@@ -171,7 +161,7 @@ body { font-family: 'Inter', sans-serif; }
             <form id="editForm" method="POST" class="space-y-4">
                 {% csrf_token %}
                 <div class="space-y-2">
-                    <label class="text-sm font-medium">Full Name</label>
+                    <label class="text-sm font-medium">Name</label>
                     <input type="text" name="full_name" id="editName" class="w-full rounded-md border px-3 py-1 h-12" value="{{ user.first_name }} {{ user.last_name }}">
                 </div>
                 <div class="space-y-2">
@@ -254,5 +244,4 @@ closeAdd.onclick = () => addModal.classList.add('hidden');
 addModal.onclick = e => { if(e.target===addModal) addModal.classList.add('hidden'); };
 </script>
 
-</body>
-</html>
+{% endblock %}

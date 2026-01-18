@@ -44,16 +44,23 @@ INSTALLED_APPS = [
     'tailwind',
     'theme',
 ]
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+
+    'finance.middleware.ForceLoginMiddleware',  # 👈 middleware global
+
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+LOGIN_URL = 'login'
+
+
 
 ROOT_URLCONF = 'mess_finance.urls'
 
@@ -73,6 +80,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'mess_finance.wsgi.application'
+
 
 
 # Database

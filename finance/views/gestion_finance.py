@@ -2,40 +2,40 @@ from django.shortcuts import render,  redirect
 from django.views import View
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-from django.contrib.auth import authenticate, login, logout
+
 from finance.models import *
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 Utilisateur = get_user_model()
 
 
+class IndexView(LoginRequiredMixin, View):
+    login_url = 'login'
+    template_name = 'global_data/index.html'
 
-class IndexView(View):
-    template=  'global_data/index.html'
     def get(self, request):
-        user = request.user
+        user = request.user  # ici user est FORCÉMENT connecté
 
         # Récupérer toutes les transactions de l'utilisateur
         transactions = user.transactions.all().order_by('-date')
 
-        # Calculer le solde en partant du solde initial
+        # Calculer le solde
         solde = getattr(user, 'initial_balance', 0)
         for t in transactions:
             if t.type_transaction == 'REVENU':
                 solde += t.montant
             elif t.type_transaction == 'DEPENSE':
                 solde -= t.montant
-            # ECHEC ou autre type, tu peux ajouter une règle spécifique
             elif t.type_transaction == 'ECHEC':
-                solde -= t.montant  # si tu considères l'épargne comme un "débit"
+                solde -= t.montant
 
-        return render(request, self.template, {
+        return render(request, self.template_name, {
             'user': user,
-            'transaction': transactions,
+            'transactions': transactions,
             'solde': solde
         })
-
 
 class TransactionView(View):
     template= 'global_data/transaction.html'
@@ -113,3 +113,5 @@ class AddView(View):
 
         messages.success(request, f"{type_transaction.capitalize()} de {montant} CFA ajouté avec succès !")
         return redirect('index')
+   
+
