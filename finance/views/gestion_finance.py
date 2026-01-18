@@ -18,6 +18,7 @@ class IndexView(LoginRequiredMixin, View):
 
     def get(self, request):
         user = request.user
+        transactions = user.transactions.all().order_by('-date')
 
         # 🔹 Fonction utilitaire pour calculer le solde par compte
         def solde(compte):
@@ -45,6 +46,7 @@ class IndexView(LoginRequiredMixin, View):
             'solde_cash': solde_cash,
             'solde_momo': solde_momo,
             'solde_orange': solde_orange,
+             'transaction': transactions,
             
         })
 class TransactionView(View):
