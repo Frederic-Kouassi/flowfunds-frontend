@@ -54,13 +54,38 @@ class IndexView(LoginRequiredMixin, View):
               'usable_money': usable_money,
             
         })
+    from django.views import View
+from django.shortcuts import render
+from django.db.models import Q
+
 class TransactionView(View):
-    template= 'global_data/transaction.html'
+    template = 'global_data/transaction.html'
+
     def get(self, request):
         user = request.user
 
-        # Récupérer toutes les transactions de l'utilisateur
+        # Récupérer tous les paramètres de recherche
+        query = request.GET.get('q', '')       # mot-clé
+        type_filter = request.GET.get('type', '')  # type de transaction
+
+        # Base : toutes les transactions de l'utilisateur
         transactions = user.transactions.all().order_by('-date')
+
+        # Filtrer par type si sélectionné
+        if type_filter:
+            type_mapping = {
+                'income': 'REVENU',
+                'expense': 'DEPENSE',
+                'save': 'ECHEC'
+            }
+            transactions = transactions.filter(type_transaction=type_mapping.get(type_filter))
+
+        # Filtrer par mot-clé si fourni (sur description ou catégorie)
+        if query:
+            transactions = transactions.filter(
+                Q(description__icontains=query) |
+                Q(categorie__icontains=query)
+            )
 
         # Calculer le solde en partant du solde initial
         solde = getattr(user, 'initial_balance', 0)
@@ -69,16 +94,16 @@ class TransactionView(View):
                 solde += t.montant
             elif t.type_transaction == 'DEPENSE':
                 solde -= t.montant
-            # ECHEC ou autre type, tu peux ajouter une règle spécifique
             elif t.type_transaction == 'ECHEC':
-                solde -= t.montant  # si tu considères l'épargne comme un "débit"
+                solde -= t.montant  # Épargne considérée comme "débit"
 
         return render(request, self.template, {
             'user': user,
             'transaction': transactions,
-            'solde': solde
+            'solde': solde,
+            'query': query,
+            'type_filter': type_filter,
         })
-
 
 
 
