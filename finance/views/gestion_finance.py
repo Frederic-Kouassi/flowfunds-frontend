@@ -3,6 +3,7 @@ from django.views import View
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.db.models import Sum
+from django.db.models import Q
 
 from finance.models import *
 
@@ -54,9 +55,9 @@ class IndexView(LoginRequiredMixin, View):
               'usable_money': usable_money,
             
         })
-    from django.views import View
-from django.shortcuts import render
-from django.db.models import Q
+   
+
+
 
 class TransactionView(View):
     template = 'global_data/transaction.html'
